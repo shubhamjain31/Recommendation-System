@@ -28,6 +28,8 @@ def index(request):
 	return render(request,'index.html',params)
 
 def watch(request,vid):
+	if request.session.has_key('is_logged'):
+		userPic = Users.objects.filter(UserId=request.session['is_logged'])
 	watch_video = Videos_Data.objects.filter(Video_Id=vid)
 	for v in watch_video:
 		vid_name = v.Title
@@ -43,7 +45,7 @@ def watch(request,vid):
 	view_count = str(int(count)+1)
 	datasave = Videos_Data.objects.filter(Video_Id=vid).update(Views=view_count)
 	watch_video = Videos_Data.objects.filter(Video_Id=vid)
-	params = {"video":watch_video,'all_videos':lt}
+	params = {"video":watch_video,'all_videos':lt,'image':userPic}
 	return render(request,'play.html',params)
 
 def about(request):
