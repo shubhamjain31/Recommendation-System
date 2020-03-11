@@ -45,21 +45,24 @@ def watch(request,vid):
 	view_count = str(int(count)+1)
 	datasave = Videos_Data.objects.filter(Video_Id=vid).update(Views=view_count)
 	watch_video = Videos_Data.objects.filter(Video_Id=vid)
-	params = {"video":watch_video,'all_videos':lt,'image':userPic}
+	if request.session.has_key('is_logged'):
+		userPic = Users.objects.filter(UserId=request.session['is_logged'])
+		params = {"video":watch_video,'all_videos':lt,'image':userPic}
+	else:
+		params = {"video":watch_video,'all_videos':lt}
 	return render(request,'play.html',params)
 
 def about(request):
-	flag =False
 	if request.session.has_key('is_logged'):
-		flag = True
-	params = {'flag':flag}
+		userPic = Users.objects.filter(UserId=request.session['is_logged'])
+		params = {'image':userPic}
+	else:
+		params = {}
 	return render(request,'about.html',params)
 
-def uploadfile(request):
-	return render(request,'uploadfile.html')
 
-#Uploading Vedios Using login.html
-def uploadsave(request):
+#Uploading Video Using login.html
+def upload(request):
 	if request.method=="POST":
 		thumbnail = request.FILES['tnail']
 		video = request.FILES['video']
@@ -88,8 +91,6 @@ def uploadsave(request):
 		else:
 			return render(request,'login.html')
 
-def loginfile(request):
-	return render(request,'login.html')
 
 def login(request):
 	if request.method=="POST":
@@ -104,7 +105,9 @@ def login(request):
 		if check_password(pswd,userpass) == True:
 			request.session['is_logged'] = userId
 			request.session['name'] = holdername
-			return HttpResponseRedirect('/uploadsave')
+			return HttpResponseRedirect('/')
+		else:
+			return HttpResponse("Invalid Password")
 	else:
 		if request.session.has_key('is_logged'):
 			return HttpResponseRedirect('/')
@@ -138,25 +141,33 @@ def cpasswordpage(request):
 
 def cpasswordsave(request):
 	if request.method=="POST":
+		email = request.POST.get('email')
 		cpass = request.POST.get('cpass')
 		npass = request.POST.get('npass')
 		vpass = request.POST.get('vpass')
-		obj = Login.objects.filter(password=cpass)
+		obj = Users.objects.filter(Email=email)
 		if obj:
-			if npass != vpass:
-				messages.success(request,'New Password and Verify Password does not match')
-				return render(request,'changepassword.html')
+			for p in obj:
+				upass = p.Password
+			if check_password(cpass,upass) == True:
+				if npass != vpass:
+					messages.success(request,'New Password and Verify Password does not match')
+					return render(request,'changepassword.html')
+				else:
+					password = make_password(npass)
+					datasave = Users.objects.filter(Email=email).update(Password=password)
+					messages.success(request,'Change Password Successfully')
+					return render(request,'changepassword.html')
 			else:
-				messages.success(request,'Change Password Successfully')
+				messages.success(request,'Invalid Current Password')
 				return render(request,'changepassword.html')
 		else:
-			messages.success(request,'Invalid Current Password')
+			messages.success(request,'Invalid Email-ID')
 			return render(request,'changepassword.html')
-
+	
 def search(request):
 	flag = False
-	if request.session.has_key('is_logged'):
-		flag = True
+	
 	query = request.GET['search']
 	if len(query)>20:
 		allposts = Videos_Data.objects.none()
@@ -167,7 +178,12 @@ def search(request):
 		allposts = allPostTitle.union(allPostCategory,allPostChannel_Name)
 	if allposts.count() == 0:
 		messages.warning(request,'No search results found. Please refine your query')
-	params = {'allposts':allposts,'query':query,'flag':flag}
+	if request.session.has_key('is_logged'):
+		flag = True
+		userPic = Users.objects.filter(UserId=request.session['is_logged'])
+		params = {'allposts':allposts,'query':query,'flag':flag,'image':userPic}
+	else:
+		params = {'allposts':allposts,'query':query,'flag':flag}
 	return render(request,'search.html',params)
 
 def logout(request):
@@ -207,12 +223,6 @@ def post_comments(request,vid):
 	params = {"video":post}
 	return render(request, 'play.html', params)
  
-def csv_file(request):
-	from django_pandas.io import read_frame
-	query = Videos_Data.objects.all()
-	df = read_frame(query)
-	df.to_csv("Data.csv",index = False)
-	return HttpResponse('<h1>Create successfully')
 
 def subscribe(request):
 	if request.method=="POST":
@@ -235,7 +245,14 @@ def subscribe(request):
 
 
 #--------------Categories----------------
-def romance(request):
-	all_videos = Videos_Data.objects.filter(Category__icontains="Romance")
-	params = {'videos':all_videos}
+
+def category(request):
+	if request.method == "POST":
+		cat = request.POST.get('cat')
+	all_videos = Videos_Data.objects.filter(Category__icontains=cat)
+	if request.session.has_key('is_logged'):
+		userPic = Users.objects.filter(UserId=request.session['is_logged'])
+		params = {'videos':all_videos,'category':cat,'image':userPic}
+	else:
+		params = {'videos':all_videos,'category':cat}
 	return render(request,'categorywise.html',params)

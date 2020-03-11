@@ -24,9 +24,7 @@ urlpatterns = [
     path('',views.index,name = "index"),
     path('watch/<str:vid>/',views.watch,name="watch"),
     path("about/",views.about,name="About"),
-    path("uploadfile/",views.uploadfile,name="uploadfile"),
-    path("uploadsave/",views.uploadsave,name="uploadsave"),
-    path("loginfile/",views.loginfile,name="loginfile"),
+    path("upload/",views.upload,name="upload"),
     path("login/",views.login,name="login"),
     path("registerpage/",views.registerpage,name="registerpage"),
     path("register/",views.register,name="register"),
@@ -37,9 +35,8 @@ urlpatterns = [
     path('post_likes/<str:vid>',views.post_likes,name="post_likes"),
     path('post_dislikes/<str:vid>',views.post_dislikes,name="post_dislikes"),
     path('post_comments/<str:vid>',views.post_comments,name="post_comments"),
-    path("csv_file/",views.csv_file,name="csv_file"),
     path("subscribe/",views.subscribe,name="subscribe"),
-    path("romance/",views.romance,name="romance"),
+    path("category/",views.category,name="category"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
