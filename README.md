@@ -5,8 +5,10 @@ In order to make the Recommendation System, there has to some data in Data Base 
 
 Collecting data and then uploading into database manually was boring and tiredsome. So I tried to automate this task.  
 
+<html>
+ <body>
 <div class="text-blue mb-2">this is an interactive approach towards recommendation System, so I decided to go with Movie Trailers
-</div>First, I downloaded the movie trailers  
+   </div>First, I downloaded the movie trailers </body</html> 
 
 To download the videos, 'video_downloader.py' file is used.  
 
