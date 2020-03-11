@@ -1,5 +1,5 @@
 # Recommendation-System
-##An aproach towards Content Based Recommendation System
+## An aproach towards Content Based Recommendation System
 
 In order to make the Recommendation System, there has to some data in Data Base which can be used to play Recommended videos.  
 
@@ -7,7 +7,7 @@ Collecting data and then uploading into database manually was boring and tiredso
 
 First, I downloaded the movie trailers  
 
-  this is an interactive approach towards recommendation System, so I decided to go with Movie Trailers  
+.bg-green-light  this is an interactive approach towards recommendation System, so I decided to go with Movie Trailers  
 
 To download the videos, 'video_downloader.py' file is used.  
 
