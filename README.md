@@ -17,4 +17,8 @@ And finally, video upload is done using ***'video_uploader.py'*** which is actua
 
 ## Screenshots
 ![Image](https://github.com/shubhamjain31/Recommendation-System/blob/master/ScreenShots/Home%20Page%20One.png)
-![Image](https://github.com/shubhamjain31/Recommendation-System/blob/master/ScreenShots/Home%20Page%20Two.png)
+![Image](https://github.com/shubhamjain31/Recommendation-System/blob/master/ScreenShots/Video%20Play%20Page.png)  
+
+In the above picture, when we clicked on Half Girlfriend movie, the top two recommendations are of Manmarziyaan and Luka Chupi, which pretty much are related to each other(based on content).  
+
+You can even use voice input to search for the video
