@@ -50,8 +50,8 @@
       </div>
       <div>
       <form action="/post_comments/{{i.Video_Id}}" method="post" name="">{% csrf_token %}
-      <textarea rows="1" cols="93" name="comment" class="" placeholder="Add a public comment..."></textarea><br>
-      <button class="comment btn btn-dark" type="submit" name="commentbtn">Comment</button>
+      <textarea rows="1" cols="93" name="comment" class="w-100" placeholder="Add a public comment..."></textarea><br>
+      <button class="comment btn btn-dark mt-1" type="submit" name="commentbtn">Comment</button>
       <br>
       {% if i.Comments %}
       <div class="mt-2"><img class="rounded-circle mr-2" src="{% static 'images/profile.jpeg' %}" style="width: 40px;"><b class="mr-3">Shubham Jain</b> <span>2 days ago </span><br></div>
